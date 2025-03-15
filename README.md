@@ -1,59 +1,87 @@
-# Stochastic Dominance Constraints
+# Portfolio Optimization using Coherent Measures of Risk
 
-## Introduction
+## Overview
+This project focuses on portfolio optimization using **Coherent Measures of Risk**, such as Conditional Value at Risk (CVaR) and Mean Semi Deviation at Risk (MAD). The goal is to construct an optimal portfolio by minimizing risk while maximizing expected returns, leveraging modern optimization techniques and financial risk modeling.
 
-Stochastic Dominance (SD) is a key concept in decision-making under uncertainty, particularly in finance, economics, and risk management. It provides a framework for comparing probability distributions of uncertain outcomes, ensuring that one alternative is preferred over another according to rational decision-making criteria.
+## Features
+- **Implementation of Coherent Risk Measures:** Incorporates CVaR, EVaR, Mean-Semideviation, and Mean-Variance models.
+- **Data Processing:** Handles financial time-series data, computing returns.
+- **Optimization Techniques:** Utilizes convex optimization  for portfolio allocation.
+- **Backtesting Framework:** Evaluates the performance of optimized portfolios against historical data.
+- **Efficient Computation:** Leverages libraries such as **NumPy, SciPy, and CVXPY** for performance-efficient calculations.
 
-Stochastic Dominance Constraints (SDCs) are mathematical constraints incorporated into optimization models to enforce dominance relationships between random variables. These constraints are widely used in portfolio optimization, risk-sensitive decision-making.
+## Portfolio Optimization Models
+### 1. **Mean-Variance Optimization (MVO)**
+- Seeks to minimize **variance** while maximizing expected returns.
+- Formulated as:
+  $\[\min_w w^T \Sigma w \quad \text{subject to} \quad w^T r \geq \mu, \quad \sum w_i = 1, \quad w_i \geq 0\]$
+  where:
+  - **w** = portfolio weights
+  - **r** = expected returns
+  - **Σ** = covariance matrix of returns
+  - **μ** = target return
 
-## Project Description
-
-This project focuses on optimizing investments in a set of securities with random return rates, while comparing the portfolio performance to a benchmark return rate (e.g., here equally weighted portfolio). Our decision variables \( x \) represent the fraction of capital allocated to each security, and \( X \) is a polyhedral set defining investment constraints and (Y) is our benchmark porfolio. The portfolio return rate is given by:
-
-$R_p = \sum_{i} x_i R_i$
-
-### Optimization Problem:
-
-
-$\max_{x \in X} E[R_p]$
-
-
-Subject to:
-
-
-Here considered long only portflio
-$\[x_i \geq 0, \quad \forall i\]$
-
-Allocation contraints
-$\[ \sum x_i = 1 \]$
-
-### Second-Order Stochastic Dominance (SSD)
-Accounts for risk aversion and ensures that one distribution is preferable for all risk-averse investors. Mathematically, SSD holds if:
-
-$\int_{-\infty}^{t} F_X(s) ds \leq \int_{-\infty}^{t} F_Y(s) ds, \quad \forall t$
-
-This ensures that \( X \) provides greater expected utility than \( Y \) for concave utility functions.
+### 2. **Mean-CVaR Optimization**
+- Focuses on minimizing **Conditional Value at Risk (CVaR)**, which measures expected loss beyond a given quantile.
+- Formulated as:
+  $\[\max_w \mathbb{E}[w^T r] - \chi \cdot \text{CVaR}_\alpha(w) \quad \text{subject to} \quad \sum w_i = 1, \quad w_i \geq 0\]$
+  where:
+  - **CVaR_α(w)** is the expected shortfall at confidence level **α**.
+  - **χ** is a risk aversion parameter balancing mean return and risk.
 
 
-## Stochastic Dominance Constraints in Optimization
 
-SDCs are implemented in optimization problems to ensure that the chosen decision variables yield outcomes that are stochastically superior. These constraints typically appear in:
+### 3. **Mean-Semideviation Optimization**
+- Uses **semideviation** to capture downside risk below the mean return.
+- Defined as:
+  $\[\sigma_-(w) = {-\mathbb{E}[w^T r]  + \chi \frac{1}{N} \sum_{t=1}^{N} \max(0, R_t - \bar{R})}\]$
+  where **R_t** is portfolio return at time **t** and **\bar{R}** is the mean return.
 
-- **Portfolio Optimization**: Enforcing SD constraints ensures that an optimal portfolio dominates a benchmark portfolio in terms of risk-return trade-offs.
-- **Risk-Aware Decision Making**: Ensures that selected strategies minimize downside risk and align with investor preferences.
-- **Insurance and Risk Management**: Helps in selecting policies that offer better probabilistic guarantees against losses.
+- Formulated as:
+  $\[\min_w \sigma_-(w) \quad \text{subject to} \quad w^T r \geq \mu, \quad \sum w_i = 1, \quad w_i \geq 0\]$
 
-## Formulating Stochastic Dominance Constraints
+### **Comparison Table**
+| Model               | Risk Measure | Captures Downside Risk? | Computational Complexity |
+|--------------------|-------------|-------------------------|-------------------------|
+| Mean-Variance      | Variance     | ❌ No                   | ✅ Quadratic Programming |
+| Mean-CVaR         | CVaR         | ✅ Yes                  | ✅ Linear Programming |
+| Mean-Semideviation | Semideviation | ✅ Yes                  | ✅ Linear Programming |
 
-In practical optimization models, SD constraints are often formulated using:
+## Installation
+To set up the project, clone the repository and install dependencies:
+```bash
+git clone https://github.com/your-username/portfolio-optimization.git
+cd portfolio-optimization
+pip install -r requirements.txt
+```
 
-- **Linear Programming (LP)** for SSD by integrating over empirical CDFs.
-- **Convex Optimization Methods**: Formulating SDCs as convex constraints where possible.
 
-## Applications
 
-- **Financial Portfolio Selection**: Ensuring that an investment portfolio stochastically dominates alternative portfolios.
+### Example Notebook
+An interactive Jupyter Notebook is included to demonstrate portfolio optimization:
+```bash
+jupyter notebook simulation.ipynb
+```
 
-## Conclusion
+## Dependencies
+- Python 3.x
+- NumPy
+- SciPy
+- Pandas
+- Matplotlib
+- CVXPY
 
-- **Risk Averse Preference**: By employing Second order Stochastic Dominace constraints all Risk Averese people will select the obtained portfolio compared to benchmark portfolio
+## Results and Visualization
+- Portfolio weight distribution
+- Performance metrics (Sharpe ratio, drawdown, etc.)
+
+## Future Work
+- Incorporate additional risk measures such as **Spectral Risk Measures**
+- Implement Bayesian optimization for hyperparameter tuning
+
+
+## Contributing
+Feel free to open issues or submit pull requests for improvements!
+
+
+
