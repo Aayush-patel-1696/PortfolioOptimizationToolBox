@@ -4,7 +4,7 @@
 This project focuses on portfolio optimization using **Coherent Measures of Risk**, such as Conditional Value at Risk (CVaR) and Mean Semi Deviation at Risk (MAD). The goal is to construct an optimal portfolio by minimizing risk while maximizing expected returns, leveraging modern optimization techniques and financial risk modeling.
 
 ## Features
-- **Implementation of Coherent Risk Measures:** Incorporates CVaR, EVaR, Mean-Semideviation, and Mean-Variance models.
+- **Implementation of Coherent Risk Measures:** Incorporates CVaR, Mean-Semideviation, and Mean-Variance models.
 - **Data Processing:** Handles financial time-series data, computing returns.
 - **Optimization Techniques:** Utilizes convex optimization  for portfolio allocation.
 - **Backtesting Framework:** Evaluates the performance of optimized portfolios against historical data.
